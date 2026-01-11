@@ -31,6 +31,10 @@ var getLiveOption = new Option<bool>(
     name:  "DownloadLiveChannels",
     aliases: new[] { "--get-live" }
 );
+var getVODOption = new Option<bool>(
+    name:  "DownloadVODChannels",
+    aliases: new[] { "--get-vod" }
+);
 var getEpgOption = new Option<bool>(
     name: "DownloadEPGInformation",
     aliases: new[] { "--get-epg" }
@@ -42,6 +46,7 @@ rootCommand.Options.Add(usernameOption);
 rootCommand.Options.Add(passwordOption);
 rootCommand.Options.Add(getAccountInfoOption);
 rootCommand.Options.Add(getLiveOption);
+rootCommand.Options.Add(getVODOption);
 rootCommand.Options.Add(getEpgOption);
 
 // Parse the arguments
@@ -51,17 +56,18 @@ string username = result.GetRequiredValue(usernameOption) ?? throw new ArgumentE
 string password = result.GetRequiredValue(passwordOption) ?? throw new ArgumentException("Password is required.");
 bool getAccountInfo = result.GetValue(getAccountInfoOption);
 bool getEpg = result.GetValue(getEpgOption);
+bool getVOD = result.GetValue(getVODOption);
 bool getLive = result.GetValue(getLiveOption);
 Log.Debug($"getAccountInfo: {getAccountInfo}");
 Log.Debug($"getEpg: {getEpg}");
+Log.Debug($"getVOD: {getVOD}");
 Log.Debug($"getLive: {getLive}");
 
-var factory = new DefaultHttpClientFactory("PlaylistDownloader/1.0");
+var factory = new DefaultHttpClientFactory("PlaylistDownloader/1.0.0");
 using(var xtreamClient = new XtreamClient(factory))
 {
     var connectionInfo = new XtBasicConnectionFactory(server, username, password).Create();
    
-    // Get Panel Info
     Log.Information("Testing Connection and Getting Account Information");
     var panelInfo = await xtreamClient.GetPanelAsync(connectionInfo, CancellationToken.None);
     
@@ -118,6 +124,49 @@ using(var xtreamClient = new XtreamClient(factory))
         String fileName = $"{connectionInfo.UserName}.m3u8";
         playlistFile.SaveM3U(fileName,M3UType.TagsType);
         Log.Information($"Saved Playlist file: {fileName}");
+    }
+    
+    
+    if (getVOD)
+    {
+        var categories = panelInfo.Categories.Live.ToDictionary(x=>x.Category_id, x=>x.Category_name);
+
+        Log.Information("Downloading VOD Streams");
+        List<Channels> vodStreams = await xtreamClient.GetVodStreamsAsync(connectionInfo, CancellationToken.None);
+        int counter = 0;
+        int total = vodStreams.Count;
+        double progress = 0;
+        Console.Write($"Progress: {progress}% ({counter} / {total})");  
+    
+        M3U playlistFile = new M3U();  
+        foreach (Channels vodStream in vodStreams)
+        {
+            counter++;
+            if (counter % 100 == 0)
+            {
+                progress = (double)counter / total;
+                progress = double.Round(progress, MidpointRounding.AwayFromZero);
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write($"Progress: {progress}% ({counter} / {total})");
+            }
+
+            String streamUrl = $"{connectionInfo.Server}:/{vodStream.Stream_type}/{connectionInfo.UserName}/{connectionInfo.Password}/{vodStream.StreamId}.{vodStream.Container_extension}";
+
+            Channel current = new Channel();
+            current.Duration = "-1";
+            current.TvgName = vodStream.Name;
+            current.Title = vodStream.Name;
+            current.GroupTitle = categories.GetValueOrDefault(vodStream.Category_id, "** Unassigned **");
+            current.Logo = vodStream.Stream_icon;
+            current.MediaUrl = streamUrl;
+            playlistFile.Channels.Add(current);
+        }
+        Console.SetCursorPosition(0, Console.CursorTop);
+        Console.WriteLine($"Progress: 100% ({counter} / {total})");
+    
+        String fileName = $"{connectionInfo.UserName}_vod.m3u8";
+        playlistFile.SaveM3U(fileName,M3UType.TagsType);
+        Log.Information($"Saved VOD Playlist file: {fileName}");
     }
 
     if (getEpg)
