@@ -97,7 +97,7 @@ using(var xtreamClient = new XtreamClient(factory))
                 Console.SetCursorPosition(0, Console.CursorTop);
                 Console.Write($"Progress: {progress}% ({counter} / {total})");
             }
-            String streamUrl = $"{connectionInfo.Server}:/live/{connectionInfo.UserName}/{connectionInfo.Password}/{liveStream.StreamId}.ts";
+            String streamUrl = $"{connectionInfo.Server}/live/{connectionInfo.UserName}/{connectionInfo.Password}/{liveStream.StreamId}.ts";
             Channel current = new Channel();
             current.Duration = "-1";
             current.TvgName = liveStream.Name;
