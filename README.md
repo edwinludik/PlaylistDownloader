@@ -1,6 +1,6 @@
 # PlaylistDownloader
 
-A simple and efficient CLI tool to download IPTV playlists (M3U8) and EPG information from Xtream Codes compatible servers.
+A **cross-platform CLI tool** built with **C# .NET** to interact with Xtream Codes-compatible IPTV servers. Download M3U8 playlists, EPG data, and retrieve account information — all from the command line.
 
 ## Features
 
@@ -18,7 +18,7 @@ A simple and efficient CLI tool to download IPTV playlists (M3U8) and EPG inform
 ### Clone and Build
 
 ```bash
-git clone https://github.com/yourusername/PlaylistDownloader.git
+git clone https://github.com/edwinludik/PlaylistDownloader.git
 cd PlaylistDownloader
 dotnet build -c Release
 ```
@@ -30,13 +30,15 @@ Run the application using `dotnet run` or the compiled executable.
 ### Options
 
 | Option | Alias | Description | Required |
-|--------|-------|-------------|----------|
-| `--server` | `-s` | Xtream Codes Server URL | Yes |
-| `--username` | `-u` | Your username | Yes |
-| `--password` | `-p` | Your password | Yes |
-| `--get-account-info` | | Display account information | No |
-| `--get-live` | | Download live channels to M3U8 | No |
-| `--get-epg` | | Download EPG information to XML | No |
+|--------|-------|-------------|-------|
+| `--server` | `-s` | Xtream Codes Server URL | Yes   |
+| `--username` | `-u` | Your username | Yes   |
+| `--password` | `-p` | Your password | Yes   |
+| `--get-account-info` | | Display account information | No    |
+| `--get-live` | | Download live channels to M3U8 | No    |
+| `--get-epg` | | Download EPG information to XML | No    |
+
+Note: If no --get-??? option is provided, the tool defaults to --get-account-info.
 
 ### Examples
 
@@ -62,12 +64,6 @@ To publish a self-contained executable for Linux x64:
 dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true  
 ```
 
-To deploy:
-
-```bash
-scp bin/Release/net9.0/linux-x64/publish/* user@server:~/PlaylistDownloader/  
-```
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -75,4 +71,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
