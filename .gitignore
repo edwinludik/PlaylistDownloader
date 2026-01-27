@@ -1,5 +1,23 @@
+# .NET
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+publish/
+*.user
+*.userosscache
+*.sln.docstates
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.bak
+.DS_Store
+
+# ReSharper / Rider
+_ReSharper.*/
+*.DotSettings.user
+
+# User specific data
+*.m3u
+*.m3u8
+*.xml
