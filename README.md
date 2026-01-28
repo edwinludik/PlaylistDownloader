@@ -38,7 +38,7 @@ Run the application using `dotnet run` or the compiled executable.
 | `--get-live` | | Download live channels to M3U8 | No    |
 | `--get-epg` | | Download EPG information to XML | No    |
 
-Note: If no --get-??? option is provided, the tool defaults to --get-account-info.
+Note: If no --get-xxx option is provided, the tool will just test the connection to the server
 
 ### Examples
 

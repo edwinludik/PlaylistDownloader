@@ -64,7 +64,7 @@ using(var xtreamClient = new XtreamClient(factory))
     // Get Panel Info
     Log.Information("Testing Connection and Getting Account Information");
     var panelInfo = await xtreamClient.GetPanelAsync(connectionInfo, CancellationToken.None);
-    
+    Log.Information("Connection Works");
     if (getAccountInfo)
     {
         Log.Information($"Status: {panelInfo.User_info.Status}");
