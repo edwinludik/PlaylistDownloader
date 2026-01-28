@@ -29,14 +29,14 @@ Run the application using `dotnet run` or the compiled executable.
 
 ### Options
 
-| Option | Alias | Description | Required |
-|--------|-------|-------------|-------|
-| `--server` | `-s` | Xtream Codes Server URL | Yes   |
-| `--username` | `-u` | Your username | Yes   |
-| `--password` | `-p` | Your password | Yes   |
-| `--get-account-info` | | Display account information | No    |
-| `--get-live` | | Download live channels to M3U8 | No    |
-| `--get-epg` | | Download EPG information to XML | No    |
+| Option | Alias | Description                                                 | Required |
+|--------|-------|-------------------------------------------------------------|-------|
+| `--server` | `-s`  | Xtream Codes Server URL (with the port number if specified) | Yes   |
+| `--username` | `-u`  | Your username                                               | Yes   |
+| `--password` | `-p`  | Your password                                               | Yes   |
+| `--get-account-info` | `-a`  | Display account information                                 | No    |
+| `--get-live` | `-l`  | Download live channels to M3U8                              | No    |
+| `--get-epg` | `-e`  | Download EPG information to XML                             | No    |
 
 Note: If no --get-xxx option is provided, the tool will just test the connection to the server
 

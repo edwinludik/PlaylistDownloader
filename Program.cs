@@ -25,15 +25,15 @@ var passwordOption = new Option<string>(
 );
 var getAccountInfoOption = new Option<bool>(
     name: "GetAccountInformation",
-    aliases: new[] { "--get-account-info" }
+    aliases: new[] { "-a", "--get-account-info" }
 );
 var getLiveOption = new Option<bool>(
     name:  "DownloadLiveChannels",
-    aliases: new[] { "--get-live" }
+    aliases: new[] { "-l", "--get-live" }
 );
 var getEpgOption = new Option<bool>(
     name: "DownloadEPGInformation",
-    aliases: new[] { "--get-epg" }
+    aliases: new[] { "-e", "--get-epg" }
 );
 
 var rootCommand = new RootCommand("PlaylistDownloader");
